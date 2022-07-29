@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  database:
+    image: mysql:5.7
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: P123456p
+      MYSQL_USER: clarusway
+      MYSQL_PASSWORD: Clarusway_1
+      MYSQL_DATABASE: bookstore_db
+    networks:
+      - clarusnet
+
+myapp:
+  image: raptor41/bookstoreapi:latest
+  container_name: myapp
+  restart: always
+  depends_on:
+    - database
+  ports:
+    - "80:80"
+    # ec2'nun 80 portunu containerin 80 portuna atiyoruz
+  networks:
+    - clarusnet
+# Networku asagidaki kisimda olusturuyoruz. Yukaridaki networks -clarusnet sadece networku app'e baglamaya yariyor 
+networks:
+  clarusnet:
+    driver: bridge
+# driver default olarak zaten bridge. Buradaki gibi driver kismini belirtmesek de olur..
